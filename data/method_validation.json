@@ -1,0 +1,28 @@
+{
+  "carbon_method": {
+    "status": "prototype_with_published_biomass_equations",
+    "validated_for_carbon_credit_claims": false,
+    "biomass_source": {
+      "name": "USDA Forest Service Jenkins generalized biomass equations",
+      "url": "https://www.fs.usda.gov/ne/newtown_square/publications/technical_reports/pdfs/2004/ne_gtr319.pdf",
+      "used_for": "DBH-to-biomass conversion"
+    },
+    "itree_status": {
+      "name": "i-Tree",
+      "url": "https://www.itreetools.org/",
+      "used_for": "recommended production validation target",
+      "api_integration": "not implemented; no public unauthenticated carbon-estimate API was confirmed during review"
+    },
+    "location_calibration": {
+      "status": "experimental_unvalidated",
+      "reason": "No official Colorado county/ZIP species-specific annual DBH growth table is present in this repo.",
+      "current_behavior": "County and ZIP apply an experimental local growth multiplier. Outputs remain planning estimates and are not carbon-credit validated."
+    },
+    "remaining_validation_needed": [
+      "Confirm native-species catalog against CSU/CSFS or Colorado Native Plant Society source.",
+      "Calibrate annual DBH growth by species and Colorado region from i-Tree output, official growth tables, or repeated local inventory measurements.",
+      "Compare sample outputs against i-Tree Eco/Design/MyTree for the same species, DBH, and location.",
+      "Add uncertainty ranges before public-facing claims."
+    ]
+  }
+}

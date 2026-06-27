@@ -1,0 +1,18 @@
+{
+  "name": "treechamps-ml-model",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Hybrid FIA growth + USDA biomass carbon estimator for native Colorado trees.",
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "serve": "node scripts/serve.js",
+    "download:fia": "node scripts/download_fia_sources.js",
+    "prepare:fia": "node scripts/prepare_fia_training.js",
+    "train:growth": "node src/train_growth.js",
+    "train:growth:nn": "node src/train_growth_nn.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

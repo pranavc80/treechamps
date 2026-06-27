@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tree Champs Carbon Offset Estimator</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #1f2a24;
+        --muted: #627067;
+        --line: #d6ded8;
+        --surface: #f6faf7;
+        --accent: #2e7a55;
+        --accent-dark: #225b40;
+        --amber: #8a5a14;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        color: var(--ink);
+        background: #edf4f0;
+      }
+
+      main {
+        width: min(1040px, calc(100vw - 32px));
+        margin: 32px auto;
+      }
+
+      header {
+        margin-bottom: 20px;
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: clamp(28px, 4vw, 44px);
+        line-height: 1.05;
+      }
+
+      p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(320px, 400px);
+        gap: 18px;
+      }
+
+      section {
+        background: white;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 18px;
+      }
+
+      h2 {
+        margin: 0 0 16px;
+        font-size: 18px;
+      }
+
+      .subhead {
+        margin-top: 22px;
+      }
+
+      form {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      label {
+        display: grid;
+        gap: 6px;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .hint {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 1.35;
+      }
+
+      input,
+      select {
+        width: 100%;
+        min-height: 42px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 9px 10px;
+        font: inherit;
+        color: var(--ink);
+        background: var(--surface);
+      }
+
+      .full {
+        grid-column: 1 / -1;
+      }
+
+      button {
+        min-height: 44px;
+        border: 0;
+        border-radius: 6px;
+        padding: 10px 14px;
+        font: inherit;
+        font-weight: 700;
+        color: white;
+        background: var(--accent);
+        cursor: pointer;
+      }
+
+      button:hover {
+        background: var(--accent-dark);
+      }
+
+      .actions {
+        margin-top: 16px;
+      }
+
+      .hero-number {
+        font-size: clamp(38px, 6vw, 64px);
+        line-height: 1;
+        margin: 4px 0 8px;
+        font-weight: 800;
+      }
+
+      .unit {
+        font-size: 18px;
+        color: var(--muted);
+      }
+
+      .result-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      .stat {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 12px;
+        background: var(--surface);
+      }
+
+      .stat strong {
+        display: block;
+        font-size: 20px;
+        margin-bottom: 4px;
+      }
+
+      .stat span {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .accuracy-note {
+        margin-top: 12px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      @media (max-width: 820px) {
+        .layout,
+        form,
+        .result-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Annual Carbon Offset</h1>
+        <p>Choose a native Colorado tree species, local unit, and tree diameter.</p>
+      </header>
+
+      <div class="layout">
+        <section>
+          <h2>Inputs</h2>
+          <form id="offset-form">
+            <label class="full">
+              Native tree species
+              <select name="species" id="species"></select>
+            </label>
+            <label>
+              County or ZIP
+              <input name="location" list="locations" value="Denver County" placeholder="Denver County or 80205">
+              <datalist id="locations"></datalist>
+            </label>
+            <label>
+              Number of trees
+              <input name="treeCount" type="number" min="1" step="1" value="1">
+            </label>
+            <label>
+              Diameter at breast height
+              <input name="diameterCm" type="number" min="2.5" step="0.1" placeholder="Optional">
+              <span class="hint">Optional. If blank, tree stage supplies a fallback diameter.</span>
+            </label>
+            <label class="full">
+              Tree stage fallback
+              <select name="ageClass">
+                <option value="seedling">Seedling / newly planted</option>
+                <option value="young">Young</option>
+                <option value="established" selected>Established</option>
+                <option value="mature">Mature</option>
+              </select>
+            </label>
+          </form>
+          <div class="actions">
+            <button id="estimate-button" type="button">Estimate Annual Offset</button>
+          </div>
+        </section>
+
+        <section>
+          <h2>Estimate</h2>
+          <p id="species-line">Colorado blue spruce in Denver County</p>
+          <div class="hero-number"><span id="pounds">0</span> <span class="unit">lb CO2 / year</span></div>
+          <div class="result-grid">
+            <div class="stat">
+              <strong id="kg">0</strong>
+              <span>kg CO2 per year</span>
+            </div>
+            <div class="stat">
+              <strong id="tons">0</strong>
+              <span>metric tons CO2 per year</span>
+            </div>
+            <div class="stat">
+              <strong id="location-match">-</strong>
+              <span>location factor</span>
+            </div>
+            <div class="stat">
+              <strong id="tree-count">1</strong>
+              <span>tree count</span>
+            </div>
+            <div class="stat">
+              <strong id="dbh">20 cm</strong>
+              <span>DBH used</span>
+            </div>
+            <div class="stat">
+              <strong id="storage">0</strong>
+              <span>current stored kg CO2</span>
+            </div>
+          </div>
+          <h2 class="subhead">Model Accuracy</h2>
+          <div class="result-grid">
+            <div class="stat">
+              <strong id="mae">-</strong>
+              <span>average error</span>
+            </div>
+            <div class="stat">
+              <strong id="rmse">-</strong>
+              <span>RMSE</span>
+            </div>
+            <div class="stat">
+              <strong id="r2">-</strong>
+              <span>R squared</span>
+            </div>
+            <div class="stat">
+              <strong id="improvement">-</strong>
+              <span>better than baseline</span>
+            </div>
+          </div>
+          <p class="accuracy-note" id="accuracy-note">
+            R squared shows how much growth variation the neural network explains. The average error is small enough for testing this estimator.
+          </p>
+        </section>
+      </div>
+    </main>
+
+    <script type="module">
+      import { COLORADO_COUNTIES, NATIVE_SPECIES, estimateAnnualCarbonOffset } from "./src/carbon.js";
+
+      const form = document.querySelector("#offset-form");
+      const speciesSelect = document.querySelector("#species");
+      const locationList = document.querySelector("#locations");
+      let growthModel = null;
+
+      for (const species of NATIVE_SPECIES) {
+        const option = document.createElement("option");
+        option.value = species.scientificName;
+        option.textContent = `${species.commonName} (${species.scientificName})`;
+        speciesSelect.append(option);
+      }
+      speciesSelect.value = "Picea pungens";
+
+      for (const county of COLORADO_COUNTIES) {
+        const option = document.createElement("option");
+        option.value = `${county} County`;
+        locationList.append(option);
+      }
+      for (const zip of ["80205", "80302", "80521", "80903", "81301", "81601"]) {
+        const option = document.createElement("option");
+        option.value = zip;
+        locationList.append(option);
+      }
+
+      document.querySelector("#estimate-button").addEventListener("click", renderEstimate);
+      form.addEventListener("input", renderEstimate);
+      loadGrowthModel();
+
+      async function loadGrowthModel() {
+        try {
+          const response = await fetch("models/fia_native_growth_model.json");
+          if (!response.ok) throw new Error(response.statusText);
+          growthModel = await response.json();
+        } catch {
+          growthModel = null;
+        }
+        renderEstimate();
+      }
+
+      function renderEstimate() {
+        const formData = new FormData(form);
+        const estimate = estimateAnnualCarbonOffset({
+          species: formData.get("species"),
+          location: formData.get("location"),
+          treeCount: formData.get("treeCount"),
+          ageClass: formData.get("ageClass"),
+          diameterCm: formData.get("diameterCm"),
+          growthModel
+        });
+
+        document.querySelector("#species-line").textContent = `${estimate.species.commonName} in ${estimate.location.matchedUnit}`;
+        document.querySelector("#pounds").textContent = estimate.annualPoundsCO2.toLocaleString();
+        document.querySelector("#kg").textContent = estimate.annualKgCO2.toLocaleString();
+        document.querySelector("#tons").textContent = estimate.annualMetricTonsCO2.toLocaleString();
+        document.querySelector("#location-match").textContent = `${estimate.location.factor.toFixed(2)}x`;
+        document.querySelector("#tree-count").textContent = estimate.treeCount.toLocaleString();
+        document.querySelector("#dbh").textContent = `${estimate.diameterCm.toLocaleString()} cm`;
+        document.querySelector("#storage").textContent = estimate.currentKgCO2.toLocaleString();
+        renderAccuracy();
+      }
+
+      function renderAccuracy() {
+        const metrics = growthModel?.neuralNetwork?.holdoutMetrics;
+        if (!metrics) return;
+
+        const medianMae = metrics.median.maeCm;
+        const nn = metrics.neuralResidual;
+        const improvement = ((medianMae - nn.maeCm) / medianMae) * 100;
+
+        document.querySelector("#mae").textContent = `${nn.maeCm.toFixed(5)} cm/yr`;
+        document.querySelector("#rmse").textContent = `${nn.rmseCm.toFixed(5)} cm/yr`;
+        document.querySelector("#r2").textContent = `${(nn.r2 * 100).toFixed(1)}%`;
+        document.querySelector("#improvement").textContent = `${improvement.toFixed(2)}%`;
+        document.querySelector("#accuracy-note").textContent = `R squared means the model explains ${(nn.r2 * 100).toFixed(1)}% of measured DBH-growth variation. The average error is ${nn.maeCm.toFixed(5)} cm/year, which is OK for testing and demos.`;
+      }
+
+    </script>
+  </body>
+</html>
