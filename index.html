@@ -169,6 +169,88 @@
         line-height: 1.45;
       }
 
+      .hero {
+        background: url("data/treechamps.png");
+        background-size: cover;
+        background-position: center;
+        height: 340px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 12px;
+        margin-bottom: 35px;
+        color: white;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 2;
+        max-width: 650px;
+      }
+
+      .hero h1 {
+        font-size: 48px;
+        margin-bottom: 10px;
+      }
+
+      .hero p {
+        font-size: 18px;
+        color: white;
+        margin-bottom: 25px;
+      }
+
+      .hero button {
+        background: #2e7a55;
+        padding: 14px 30px;
+        font-size: 17px;
+        border-radius: 6px;
+      }
+
+      .equivalency-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+      }
+
+      .equivalency-table th {
+        background: #2e7a55;
+        color: white;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .equivalency-table td {
+        padding: 12px;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .equivalency-table tr:nth-child(even) {
+        background: #f8f8f8;
+      }
+
+      .info {
+        background: white;
+        margin-top: 35px;
+        padding: 30px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+      }
+
+      .info h2 {
+        margin-top: 0;
+        color: #2e7a55;
+      }
+
       @media (max-width: 820px) {
         .layout,
         form,
@@ -180,6 +262,15 @@
   </head>
   <body>
     <main>
+      <section class="hero">
+        <div class="hero-content">
+          <h1>Annual Carbon Offset Estimator</h1>
+          <p>
+            Discover how much carbon native Colorado trees can remove each year.
+          </p>
+        </div>
+      </section>
+
       <header>
         <h1>Annual Carbon Offset</h1>
         <p>Choose a native Colorado tree species, local unit, and tree diameter.</p>
@@ -205,10 +296,10 @@
             <label>
               Diameter at breast height
               <input name="diameterCm" type="number" min="2.5" step="0.1" placeholder="Optional">
-              <span class="hint">Optional. If blank, tree stage supplies a fallback diameter.</span>
+              <span class="hint">Optional. If blank, tree age provides a fallback diameter.</span>
             </label>
             <label class="full">
-              Tree stage fallback
+              Tree age
               <select name="ageClass">
                 <option value="seedling">Seedling / newly planted</option>
                 <option value="young">Young</option>
@@ -252,30 +343,70 @@
               <span>current stored kg CO2</span>
             </div>
           </div>
-          <h2 class="subhead">Model Accuracy</h2>
-          <div class="result-grid">
-            <div class="stat">
-              <strong id="mae">-</strong>
-              <span>average error</span>
-            </div>
-            <div class="stat">
-              <strong id="rmse">-</strong>
-              <span>RMSE</span>
-            </div>
-            <div class="stat">
-              <strong id="r2">-</strong>
-              <span>R squared</span>
-            </div>
-            <div class="stat">
-              <strong id="improvement">-</strong>
-              <span>better than baseline</span>
-            </div>
-          </div>
-          <p class="accuracy-note" id="accuracy-note">
-            R squared shows how much growth variation the neural network explains. The average error is small enough for testing this estimator.
-          </p>
+          <h2 class="subhead">Carbon Equivalencies</h2>
+          <table class="equivalency-table">
+            <tr>
+              <th>Activity</th>
+              <th>Equivalent</th>
+            </tr>
+            <tr>
+              <td>🚗 Driving</td>
+              <td id="driveEq">-</td>
+            </tr>
+            <tr>
+              <td>⛽ Gasoline Burned</td>
+              <td id="gasEq">-</td>
+            </tr>
+            <tr>
+              <td>✈️ Air Travel</td>
+              <td id="flightEq">-</td>
+            </tr>
+            <tr>
+              <td>🏠 Home Heating</td>
+              <td id="heatEq">-</td>
+            </tr>
+            <tr>
+              <td>📱 Phone Charges</td>
+              <td id="phoneEq">-</td>
+            </tr>
+          </table>
         </section>
       </div>
+
+      <section>
+        <h2 class="subhead">Model Accuracy</h2>
+        <div class="result-grid">
+          <div class="stat">
+            <strong id="mae">-</strong>
+            <span>average error</span>
+          </div>
+          <div class="stat">
+            <strong id="rmse">-</strong>
+            <span>RMSE</span>
+          </div>
+          <div class="stat">
+            <strong id="r2">-</strong>
+            <span>R squared</span>
+          </div>
+          <div class="stat">
+            <strong id="improvement">-</strong>
+            <span>better than baseline</span>
+          </div>
+        </div>
+        <p class="accuracy-note" id="accuracy-note">
+          R squared shows how much growth variation the neural network explains. The average error is small enough for testing this estimator.
+        </p>
+      </section>
+
+      <section class="info">
+        <h2>How are these estimates calculated?</h2>
+        <p>
+          This estimator combines native Colorado tree species information with
+          growth models and local environmental data to estimate annual carbon
+          absorption. Actual carbon storage depends on the tree's age, health,
+          soil conditions, climate, and maintenance.
+        </p>
+      </section>
     </main>
 
     <script type="module">
@@ -339,6 +470,15 @@
         document.querySelector("#tree-count").textContent = estimate.treeCount.toLocaleString();
         document.querySelector("#dbh").textContent = `${estimate.diameterCm.toLocaleString()} cm`;
         document.querySelector("#storage").textContent = estimate.currentKgCO2.toLocaleString();
+
+        const pounds = estimate.annualPoundsCO2;
+
+        document.querySelector("#driveEq").textContent = `${Math.round(pounds / 0.89).toLocaleString()} miles`;
+        document.querySelector("#gasEq").textContent = `${Math.round(pounds / 19.6).toLocaleString()} gallons`;
+        document.querySelector("#flightEq").textContent = `${Math.round(pounds / 0.53).toLocaleString()} passenger miles`;
+        document.querySelector("#heatEq").textContent = `${Math.round(pounds / 50)} days`;
+        document.querySelector("#phoneEq").textContent = `${Math.round(pounds * 110).toLocaleString()} charges`;
+
         renderAccuracy();
       }
 
