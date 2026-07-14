@@ -4,6 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Tree Champs Carbon Offset Estimator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
       :root {
         color-scheme: light;
@@ -22,9 +25,9 @@
 
       body {
         margin: 0;
-        font-family: Arial, Helvetica, sans-serif;
+        font-family: 'Lato', Arial, Helvetica, sans-serif;
         color: var(--ink);
-        background: #edf4f0;
+        background: #f2e5e5;
       }
 
       main {
@@ -34,6 +37,29 @@
 
       header {
         margin-bottom: 20px;
+      }
+
+      .intro {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .header-copy {
+        flex: 1;
+      }
+
+      .header-image {
+        width: 120px;
+        height: auto;
+        border-radius: 12px;
+        flex-shrink: 0;
+      }
+
+      h1,
+      h2 {
+        font-family: 'Montserrat', Arial, Helvetica, sans-serif;
       }
 
       h1 {
@@ -58,6 +84,10 @@
         border: 1px solid var(--line);
         border-radius: 8px;
         padding: 18px;
+      }
+
+      .layout > section {
+        background: white;
       }
 
       h2 {
@@ -170,50 +200,29 @@
       }
 
       .hero {
-        background: url("data/treechamps.png");
-        background-size: cover;
-        background-position: center;
-        height: 340px;
         display: flex;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
         border-radius: 12px;
-        margin-bottom: 35px;
-        color: white;
-        text-align: center;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .hero::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.45);
+        margin-bottom: 24px;
+        color: var(--ink);
+        text-align: left;
       }
 
       .hero-content {
-        position: relative;
-        z-index: 2;
         max-width: 650px;
       }
 
       .hero h1 {
         font-size: 48px;
         margin-bottom: 10px;
+        color: var(--ink);
       }
 
       .hero p {
         font-size: 18px;
-        color: white;
-        margin-bottom: 25px;
-      }
-
-      .hero button {
-        background: #2e7a55;
-        padding: 14px 30px;
-        font-size: 17px;
-        border-radius: 6px;
+        color: var(--muted);
+        margin-bottom: 0;
       }
 
       .equivalency-table {
@@ -262,18 +271,12 @@
   </head>
   <body>
     <main>
-      <section class="hero">
-        <div class="hero-content">
-          <h1>Annual Carbon Offset Estimator</h1>
-          <p>
-            Discover how much carbon native Colorado trees can remove each year.
-          </p>
+      <header class="intro">
+        <div class="header-copy">
+          <h1>Annual Carbon Offset</h1>
+          <p>Choose a native Colorado tree species, local unit, and tree diameter.</p>
         </div>
-      </section>
-
-      <header>
-        <h1>Annual Carbon Offset</h1>
-        <p>Choose a native Colorado tree species, local unit, and tree diameter.</p>
+        <img class="header-image" src="data/treechamps.png" alt="Tree illustration">
       </header>
 
       <div class="layout">
