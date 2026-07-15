@@ -4,19 +4,50 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Tree Champs Carbon Offset Estimator</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
+      @font-face {
+        font-family: "inknut antiqua";
+        font-style: normal;
+        font-weight: 400;
+        src: url("https://static.parastorage.com/tag-bundler/api/v1/fonts-cache/googlefont/woff2/s/inknutantiqua/v14/Y4GSYax7VC4ot_qNB4nYpBdaKUUE4J3TRBYA.woff2") format("woff2");
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: "inknut antiqua";
+        font-style: normal;
+        font-weight: 700;
+        src: url("https://static.parastorage.com/tag-bundler/api/v1/fonts-cache/googlefont/woff2/s/inknutantiqua/v14/Y4GRYax7VC4ot_qNB4nYpBdaKU2_xYj-ZhsqY4Ne.woff2") format("woff2");
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: "lato-light";
+        font-style: normal;
+        font-weight: 400;
+        src: url("https://static.parastorage.com/tag-bundler/api/v1/fonts-cache/googlefont/woff2/s/lato/v14/2hXzmNaFRuKTSBR9nRGO-A.woff2") format("woff2");
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: "lato-light";
+        font-style: normal;
+        font-weight: 700;
+        src: url("https://static.parastorage.com/tag-bundler/api/v1/fonts-cache/googlefont/woff2/s/lato/v14/7nLfsQCzhQW_PwpkrwroYw.woff2") format("woff2");
+        font-display: swap;
+      }
+
       :root {
         color-scheme: light;
-        --ink: #1f2a24;
-        --muted: #627067;
-        --line: #d6ded8;
-        --surface: #f6faf7;
-        --accent: #2e7a55;
-        --accent-dark: #225b40;
-        --amber: #8a5a14;
+        --ink: #0c0b0b;
+        --muted: #444343;
+        --line: #eae4e4;
+        --surface: #ffffff;
+        --panel: #60baa8;
+        --panel-light: #d9f2ec;
+        --accent: #34bca7;
+        --accent-dark: #009490;
+        --amber: #006837;
       }
 
       * {
@@ -25,9 +56,9 @@
 
       body {
         margin: 0;
-        font-family: 'Lato', Arial, Helvetica, sans-serif;
+        font-family: "lato-light", lato, Helvetica, Arial, sans-serif;
         color: var(--ink);
-        background: #f2e5e5;
+        background: var(--surface);
       }
 
       main {
@@ -39,31 +70,9 @@
         margin-bottom: 20px;
       }
 
-      .intro {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-      }
-
-      .header-copy {
-        flex: 1;
-      }
-
-      .header-image {
-        width: 120px;
-        height: auto;
-        border-radius: 12px;
-        flex-shrink: 0;
-      }
-
-      h1,
-      h2 {
-        font-family: 'Montserrat', Arial, Helvetica, sans-serif;
-      }
-
       h1 {
         margin: 0 0 8px;
+        font-family: "inknut antiqua", serif;
         font-size: clamp(28px, 4vw, 44px);
         line-height: 1.05;
       }
@@ -80,18 +89,15 @@
       }
 
       section {
-        background: white;
+        background: var(--panel);
         border: 1px solid var(--line);
         border-radius: 8px;
         padding: 18px;
       }
 
-      .layout > section {
-        background: white;
-      }
-
       h2 {
         margin: 0 0 16px;
+        font-family: "inknut antiqua", serif;
         font-size: 18px;
       }
 
@@ -110,13 +116,6 @@
         gap: 6px;
         font-size: 13px;
         font-weight: 700;
-      }
-
-      .hint {
-        color: var(--muted);
-        font-size: 12px;
-        font-weight: 400;
-        line-height: 1.35;
       }
 
       input,
@@ -156,6 +155,7 @@
       }
 
       .hero-number {
+        font-family: "inknut antiqua", serif;
         font-size: clamp(38px, 6vw, 64px);
         line-height: 1;
         margin: 4px 0 8px;
@@ -183,6 +183,7 @@
 
       .stat strong {
         display: block;
+        font-family: "inknut antiqua", serif;
         font-size: 20px;
         margin-bottom: 4px;
       }
@@ -192,47 +193,73 @@
         font-size: 13px;
       }
 
-      .accuracy-note {
-        margin-top: 12px;
-        color: var(--muted);
-        font-size: 13px;
-        line-height: 1.45;
-      }
-
       .hero {
+        background: url("data/treechamps.png");
+        background-size: cover;
+        background-position: center;
+        height: 340px;
         display: flex;
-        justify-content: flex-start;
+        justify-content: center;
         align-items: center;
         border-radius: 12px;
-        margin-bottom: 24px;
-        color: var(--ink);
-        text-align: left;
+        margin-bottom: 35px;
+        color: white;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
       }
 
       .hero-content {
+        position: relative;
+        z-index: 2;
         max-width: 650px;
       }
 
       .hero h1 {
         font-size: 48px;
         margin-bottom: 10px;
-        color: var(--ink);
       }
 
       .hero p {
         font-size: 18px;
-        color: var(--muted);
-        margin-bottom: 0;
+        color: white;
+        margin-bottom: 25px;
+      }
+
+      .hero button {
+        background: var(--accent);
+        padding: 14px 30px;
+        font-size: 17px;
+        border-radius: 6px;
       }
 
       .equivalency-table {
         width: 100%;
         border-collapse: collapse;
-        margin-top: 15px;
+        margin-top: 12px;
+      }
+
+      .equivalency-panel {
+        background: var(--panel-light);
+        border: 1px solid rgba(0, 104, 55, 0.22);
+        border-radius: 8px;
+        margin-top: 22px;
+        padding: 16px;
+      }
+
+      .equivalency-panel .subhead {
+        margin-top: 0;
       }
 
       .equivalency-table th {
-        background: #2e7a55;
+        background: var(--accent);
         color: white;
         padding: 12px;
         text-align: left;
@@ -240,24 +267,36 @@
 
       .equivalency-table td {
         padding: 12px;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px solid var(--line);
       }
 
       .equivalency-table tr:nth-child(even) {
-        background: #f8f8f8;
+        background: var(--surface);
       }
 
       .info {
-        background: white;
+        background: var(--panel);
         margin-top: 35px;
         padding: 30px;
         border-radius: 8px;
-        border: 1px solid #ddd;
+        border: 1px solid var(--line);
+        color: white;
       }
 
       .info h2 {
         margin-top: 0;
-        color: #2e7a55;
+        color: white;
+      }
+
+      .info p {
+        color: white;
+      }
+
+      .input-info {
+        background: transparent;
+        border: 0;
+        margin-top: 28px;
+        padding: 0;
       }
 
       @media (max-width: 820px) {
@@ -271,12 +310,18 @@
   </head>
   <body>
     <main>
-      <header class="intro">
-        <div class="header-copy">
-          <h1>Annual Carbon Offset Calculator</h1>
-          <p>Discover how much carbon native Colorado trees can remove each year.</p>
+      <section class="hero">
+        <div class="hero-content">
+          <h1>Annual Carbon Offset Estimator</h1>
+          <p>
+            Discover how much carbon native Colorado trees can remove each year.
+          </p>
         </div>
-        <img class="header-image" src="data/treechamps.png" alt="Tree illustration">
+      </section>
+
+      <header>
+        <h1>Annual Carbon Offset</h1>
+        <p>Choose a native Colorado tree species, local unit, and tree age.</p>
       </header>
 
       <div class="layout">
@@ -296,11 +341,6 @@
               Number of trees
               <input name="treeCount" type="number" min="1" step="1" value="1">
             </label>
-            <label>
-              Diameter at breast height
-              <input name="diameterCm" type="number" min="2.5" step="0.1" placeholder="Optional">
-              <span class="hint">Optional. If blank, tree age provides a fallback diameter.</span>
-            </label>
             <label class="full">
               Tree age
               <select name="ageClass">
@@ -313,6 +353,15 @@
           </form>
           <div class="actions">
             <button id="estimate-button" type="button">Estimate Annual Offset</button>
+          </div>
+          <div class="info input-info">
+            <h2>How are these estimates calculated?</h2>
+            <p>
+              This estimator combines native Colorado tree species information with
+              growth models and local environmental data to estimate annual carbon
+              absorption. Actual carbon storage depends on the tree's age, health,
+              soil conditions, climate, and maintenance.
+            </p>
           </div>
         </section>
 
@@ -338,53 +387,42 @@
               <span>tree count</span>
             </div>
             <div class="stat">
-              <strong id="dbh">20 cm</strong>
-              <span>DBH used</span>
-            </div>
-            <div class="stat">
               <strong id="storage">0</strong>
               <span>current stored kg CO2</span>
             </div>
           </div>
-          <h2 class="subhead">Carbon Equivalencies</h2>
-          <table class="equivalency-table">
-            <tr>
-              <th>Activity</th>
-              <th>Equivalent</th>
-            </tr>
-            <tr>
-              <td>🚗 Driving</td>
-              <td id="driveEq">-</td>
-            </tr>
-            <tr>
-              <td>⛽ Gasoline Burned</td>
-              <td id="gasEq">-</td>
-            </tr>
-            <tr>
-              <td>✈️ Air Travel</td>
-              <td id="flightEq">-</td>
-            </tr>
-            <tr>
-              <td>🏠 Home Heating</td>
-              <td id="heatEq">-</td>
-            </tr>
-            <tr>
-              <td>📱 Phone Charges</td>
-              <td id="phoneEq">-</td>
-            </tr>
-          </table>
+          <div class="equivalency-panel">
+            <h2 class="subhead">Carbon Equivalencies</h2>
+            <table class="equivalency-table">
+              <tr>
+                <th>Activity</th>
+                <th>Equivalent</th>
+              </tr>
+              <tr>
+                <td>🚗 Driving</td>
+                <td id="driveEq">-</td>
+              </tr>
+              <tr>
+                <td>⛽ Gasoline Burned</td>
+                <td id="gasEq">-</td>
+              </tr>
+              <tr>
+                <td>✈️ Air Travel</td>
+                <td id="flightEq">-</td>
+              </tr>
+              <tr>
+                <td>🏠 Home Heating</td>
+                <td id="heatEq">-</td>
+              </tr>
+              <tr>
+                <td>📱 Phone Charges</td>
+                <td id="phoneEq">-</td>
+              </tr>
+            </table>
+          </div>
         </section>
       </div>
 
-      <section class="info">
-        <h2>How are these estimates calculated?</h2>
-        <p>
-          This estimator combines native Colorado tree species information with
-          growth models and local environmental data to estimate annual carbon
-          absorption. Actual carbon storage depends on the tree's age, health,
-          soil conditions, climate, and maintenance.
-        </p>
-      </section>
     </main>
 
     <script type="module">
@@ -436,7 +474,6 @@
           location: formData.get("location"),
           treeCount: formData.get("treeCount"),
           ageClass: formData.get("ageClass"),
-          diameterCm: formData.get("diameterCm"),
           growthModel
         });
 
@@ -446,33 +483,22 @@
         document.querySelector("#tons").textContent = estimate.annualMetricTonsCO2.toLocaleString();
         document.querySelector("#location-match").textContent = `${estimate.location.factor.toFixed(2)}x`;
         document.querySelector("#tree-count").textContent = estimate.treeCount.toLocaleString();
-        document.querySelector("#dbh").textContent = `${estimate.diameterCm.toLocaleString()} cm`;
         document.querySelector("#storage").textContent = estimate.currentKgCO2.toLocaleString();
 
         const pounds = estimate.annualPoundsCO2;
 
-        document.querySelector("#driveEq").textContent = `${Math.round(pounds / 0.89).toLocaleString()} miles`;
-        document.querySelector("#gasEq").textContent = `${Math.round(pounds / 19.6).toLocaleString()} gallons`;
-        document.querySelector("#flightEq").textContent = `${Math.round(pounds / 0.53).toLocaleString()} passenger miles`;
-        document.querySelector("#heatEq").textContent = `${Math.round(pounds / 50)} days`;
-        document.querySelector("#phoneEq").textContent = `${Math.round(pounds * 110).toLocaleString()} charges`;
-
-        renderAccuracy();
+        document.querySelector("#driveEq").textContent = `${formatEquivalent(pounds / 0.89)} miles`;
+        document.querySelector("#gasEq").textContent = `${formatEquivalent(pounds / 19.6)} gallons`;
+        document.querySelector("#flightEq").textContent = `${formatEquivalent(pounds / 0.53)} passenger miles`;
+        document.querySelector("#heatEq").textContent = `${formatEquivalent(pounds / 50)} days`;
+        document.querySelector("#phoneEq").textContent = `${formatEquivalent(pounds * 110)} charges`;
       }
 
-      function renderAccuracy() {
-        const metrics = growthModel?.neuralNetwork?.holdoutMetrics;
-        if (!metrics) return;
-
-        const medianMae = metrics.median.maeCm;
-        const nn = metrics.neuralResidual;
-        const improvement = ((medianMae - nn.maeCm) / medianMae) * 100;
-
-        document.querySelector("#mae").textContent = `${nn.maeCm.toFixed(5)} cm/yr`;
-        document.querySelector("#rmse").textContent = `${nn.rmseCm.toFixed(5)} cm/yr`;
-        document.querySelector("#r2").textContent = `${(nn.r2 * 100).toFixed(1)}%`;
-        document.querySelector("#improvement").textContent = `${improvement.toFixed(2)}%`;
-        document.querySelector("#accuracy-note").textContent = `R squared means the model explains ${(nn.r2 * 100).toFixed(1)}% of measured DBH-growth variation. The average error is ${nn.maeCm.toFixed(5)} cm/year, which is OK for testing and demos.`;
+      function formatEquivalent(value) {
+        return value.toLocaleString(undefined, {
+          minimumFractionDigits: 1,
+          maximumFractionDigits: 1
+        });
       }
 
     </script>
